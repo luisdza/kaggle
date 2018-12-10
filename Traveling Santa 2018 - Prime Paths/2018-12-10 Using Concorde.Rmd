@@ -1,0 +1,69 @@
+---
+title: 'Solved using Concorde'
+author: "Luis de Sousa"
+date: "December 10, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## TSP Package
+
+#Install and use the TSP package
+```{r, loadlibaries}
+#install.packages("TSP")
+
+#library(TSP) #package ‘TSP’ was built under R version 3.5.1
+#install.packages("devtools")
+#library("devtools")
+#install_github("mhahsler/TSP")
+library(TSP)
+```
+
+#Test TSP library
+```{r, testsp}
+concorde_path("C:/Users/root/Desktop/kaggle/Traveling Santa 2018 - Prime Paths/")
+data("USCA312")
+tsp <- TSP(USCA312)
+tsp
+
+tour <- solve_TSP(tsp)
+tour
+
+## see if Concorde is correctly installed
+concorde_path()
+```
+
+#Read in CSV File
+```{r, readcsv}
+cities <- read.csv("cities.csv")
+```
+
+#Basic R plot
+```{r}
+plot(x = cities$X, y=cities$Y)
+```
+
+#Tidyverse and GGplot
+```{r, GGPlot}
+#install.packages("tidyverse")
+#install.packages("ggplot2")
+library(tidyverse)
+library(ggplot2)
+
+# aes() is passed to either ggplot() or specific layer. Aesthetics supplied
+# to ggplot() are used as defaults for every layer.
+q <- ggplot(cities, aes(x=X, y=Y))
+#q + geom_point()
+q + geom_point(alpha = 1/10)
+```
+
+#Concorde
+```{r, Concorde_Solver}
+## solve a simple Euclidean TSP (using the default method)
+solveme <- ETSP(data.frame(x = cities$X, y = cities$Y))
+#tour <- solve_TSP(solveme)
+#Error: cannot allocate vector of size 145.7 Gb
+```
